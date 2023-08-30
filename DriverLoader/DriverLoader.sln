@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DriverLoader", "DriverLoader\DriverLoader.vcxproj", "{466FF12E-C841-4C87-BCD4-2CECBAF389B6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{466FF12E-C841-4C87-BCD4-2CECBAF389B6}.Debug|x64.ActiveCfg = Debug|x64
+		{466FF12E-C841-4C87-BCD4-2CECBAF389B6}.Debug|x64.Build.0 = Debug|x64
+		{466FF12E-C841-4C87-BCD4-2CECBAF389B6}.Debug|x64.Deploy.0 = Debug|x64
+		{466FF12E-C841-4C87-BCD4-2CECBAF389B6}.Release|x64.ActiveCfg = Release|x64
+		{466FF12E-C841-4C87-BCD4-2CECBAF389B6}.Release|x64.Build.0 = Release|x64
+		{466FF12E-C841-4C87-BCD4-2CECBAF389B6}.Release|x64.Deploy.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A885927-F1A5-43F7-B20F-F2198E93C79C}
+	EndGlobalSection
+EndGlobal
