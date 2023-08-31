@@ -333,7 +333,6 @@ ULONG_PTR GetAddressOfEntryPoint(PUCHAR imageBuff)
 
 BOOLEAN RepairCookie(UINT_PTR oepAddr)
 {
-
 	//kd > uf FFFF8504E75F5000
 	//ffff8504`e75f5000 48895c2408      mov     qword ptr[rsp + 8], rbx
 	//ffff8504`e75f5005 57              push    rdi
@@ -364,6 +363,49 @@ BOOLEAN RepairCookie(UINT_PTR oepAddr)
 	return TRUE;
 }
 
+BOOLEAN RepairCookie2(PUCHAR imageBuff)
+{
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)imageBuff;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)(imageBuff + pDos->e_lfanew);
+
+	PIMAGE_NT_HEADERS32 pNt32 = NULL;
+	PIMAGE_NT_HEADERS64 pNt64 = NULL;
+
+	PIMAGE_LOAD_CONFIG_DIRECTORY32 config32;
+	PIMAGE_LOAD_CONFIG_DIRECTORY64 config64;
+
+	// Load Configuration Directory   IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG  10
+	PIMAGE_DATA_DIRECTORY directory = NULL;
+
+	// Machine
+	switch (pNt->FileHeader.Machine)
+	{
+	case IMAGE_FILE_MACHINE_I386: // x86
+		pNt32 = (PIMAGE_NT_HEADERS32)(imageBuff + pDos->e_lfanew);
+		directory = &pNt32->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG];
+
+		config32 = (PIMAGE_LOAD_CONFIG_DIRECTORY32)(directory->VirtualAddress + imageBuff);
+		*(PULONG32)(config32->SecurityCookie) = 1;
+		break;
+	case IMAGE_FILE_MACHINE_IA64:
+		break;
+	case IMAGE_FILE_MACHINE_AMD64: // x64
+		pNt64 = (PIMAGE_NT_HEADERS64)(imageBuff + pDos->e_lfanew);
+		directory = &pNt64->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG];
+
+		config64 = (PIMAGE_LOAD_CONFIG_DIRECTORY64)(directory->VirtualAddress + imageBuff);
+		*(PULONG64)(config64->SecurityCookie) = 1;
+		break;
+	default:
+		break;
+	}
+
+	
+
+
+	return TRUE;
+}
+
 VOID LoadDriver(ULONG_PTR rawBuff)
 {
 	// Stretch PE structure
@@ -383,7 +425,8 @@ VOID LoadDriver(ULONG_PTR rawBuff)
 	DbgPrint("sysLoader:pDriverEntry:[%p]\n", f_DriverEntry);
 
 	// Repair Cookie
-	RepairCookie(f_DriverEntry);
+	// RepairCookie(f_DriverEntry);
+	RepairCookie2(imageBase);
 
 	// call entryPoint
 	NTSTATUS ret = f_DriverEntry(NULL, NULL);

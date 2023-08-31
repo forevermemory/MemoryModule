@@ -20,6 +20,8 @@ BOOLEAN RepairIAT(PUCHAR imageBuff);
 // Repair Cookie
 BOOLEAN RepairCookie(UINT_PTR oepAddr);
 
+// Repair Cookie
+BOOLEAN RepairCookie2(PUCHAR imageBuff);
 
 ULONG_PTR GetAddressOfEntryPoint(PUCHAR imageBuff);
 
